@@ -27,7 +27,11 @@
                 var resultHtml = '';
                 var councillorNumber = 1;
                 links.forEach(function(link) {
-                    resultHtml += '<a href="' + link + '" target="_blank">' + 'email councillor ' + councillorNumber + '</a><br>';
+                    if (link.substring(0, 2) == "No") {
+                        resultHtml += '<a> Bad postcode - please enter in format E10 1AB </a>';    
+                    } else {
+                        resultHtml += '<a href="' + link + '" target="_blank">' + 'email councillor ' + councillorNumber + '</a><br>';
+                    }
                     councillorNumber = councillorNumber + 1;
                 });
                 $('#result').html(resultHtml);
