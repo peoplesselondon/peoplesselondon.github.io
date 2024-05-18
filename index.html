@@ -20,7 +20,7 @@
             event.preventDefault();
             
             var query = $('#query').val();
-            var url = 'https://script.google.com/macros/s/AKfycbyUQ5lURrWA8IOMTH1qZp9qr2HpnGgI0Mm8QMNwr0I6XdgketKlGPFGEAAwWM5mekb__w/exec' + '?query=' + encodeURIComponent(query);
+            var url = 'https://script.google.com/macros/s/AKfycbwvRE3R4_C_JEEdgqXpvrwbI19JxXvHLbiv6blP-W9JplOWigLenfLszmomFZIiBgOMNQ/exec' + '?query=' + encodeURIComponent(query);
             
             $.get(url, function(data) {
                 var links = data.split(',');
