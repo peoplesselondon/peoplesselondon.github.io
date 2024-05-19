@@ -3,37 +3,122 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Enter your postcode and click the links to email your councillors</title>
+    <title>Contact Your Councillors</title>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background-color: #f4f4f4;
+        }
+        header {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        header img {
+            width: 100%;
+            max-width: 800px;
+            height: auto;
+        }
+        .title-container {
+            text-align: center;
+            padding: 20px 0;
+            color: #4CAF50;
+            font-size: 2em;
+        }
+        main {
+            max-width: 800px;
+            margin: 20px;
+            padding: 20px;
+            background: white;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        .explanation {
+            margin-bottom: 20px;
+            font-size: 1.2em;
+            color: #666;
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        input[type="text"] {
+            padding: 10px;
+            margin: 10px 0;
+            width: 100%;
+            max-width: 400px;
+            font-size: 1em;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 1em;
+            color: white;
+            background-color: #4CAF50;
+            border: none;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        #result {
+            margin-top: 20px;
+        }
+    </style>
 </head>
 <body>
-    <h1>Enter your postcode and click the links to email your councillors</h1>
-    <form id="custom-form">
-        <input type="text" id="query" placeholder="Enter postcode" required>
-        <button type="submit">Submit</button>
-    </form>
-    <div id="result"></div>
+    <header>
+        <img src="https://i.imgur.com/IZRXVZB.png" alt="Banner">
+    </header>
+    <main>
+        <h1>Tell your ward councillors that Waltham Forest needs to Divest Now!</h1>
+        <div class="explanation">
+            Use this tool to find and contact your local councillors. Simply enter your postcode and name, and we'll provide links to email your councillors directly. Make sure to enter your postcode in the correct format (e.g., E10 1AB).
+        </div>
+        <form id="custom-form">
+            <input type="text" id="name" placeholder="Enter your name" required>
+            <input type="text" id="query" placeholder="Enter postcode" required>
+            <button type="submit">Submit</button>
+        </form>
+        <div id="result"></div>
+    </main>
 
     <script type="text/javascript">
     jQuery(document).ready(function($) {
         $('#custom-form').on('submit', function(event) {
             event.preventDefault();
-            
+
+            var name = $('#name').val();
             var query = $('#query').val();
-            var url = 'https://script.google.com/macros/s/AKfycbwvRE3R4_C_JEEdgqXpvrwbI19JxXvHLbiv6blP-W9JplOWigLenfLszmomFZIiBgOMNQ/exec' + '?query=' + encodeURIComponent(query);
-            
+            var url = 'https://script.google.com/macros/s/AKfycbwvRE3R4_C_JEEdgqXpvrwbI19JxXvHLbiv6blP-W9JplOWigLenfLszmomFZIiBgOMNQ/exec' + '?name=' + encodeURIComponent(name) + '&query=' + encodeURIComponent(query);
+
             $.get(url, function(data) {
-                var links = data.split(',');
+                var response = JSON.parse(data);
+                var ward = response.ward;
+                var councillors = response.councillors;
+                var links = response.links;
                 var resultHtml = '';
-                var councillorNumber = 1;
-                links.forEach(function(link) {
-                    if (link.substring(0, 2) == "No") {
-                        resultHtml += '<a> Bad postcode - please enter in format E10 1AB </a>';    
-                    } else {
-                        resultHtml += '<a href="' + link + '" target="_blank">' + 'email councillor ' + councillorNumber + '</a><br>';
-                    }
-                    councillorNumber = councillorNumber + 1;
-                });
+
+                if (ward === "Invalid") {
+                    resultHtml = '<div>Bad postcode - please enter in format E10 1AB</div>';
+                } else {
+                    resultHtml = '<div>You live in the ' + ward + ' ward and have ' + councillors.length + ' councillors: ' + councillors.join(', ') + '</div>';
+                    councillors.forEach(function(councillor, index) {
+                        var link = links[index];
+                        resultHtml += '<a href="' + link + '?name=' + encodeURIComponent(name) + '" target="_blank">Email ' + councillor + '</a><br>';
+                    });
+                }
                 $('#result').html(resultHtml);
             });
         });
