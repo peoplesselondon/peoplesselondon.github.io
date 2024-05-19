@@ -101,7 +101,7 @@
 
             var name = $('#name').val();
             var query = $('#query').val();
-            var url = 'https://script.google.com/macros/s/AKfycbwvRE3R4_C_JEEdgqXpvrwbI19JxXvHLbiv6blP-W9JplOWigLenfLszmomFZIiBgOMNQ/exec' + '?name=' + encodeURIComponent(name) + '&query=' + encodeURIComponent(query);
+            var url = 'https://script.google.com/macros/s/AKfycbwJuUypqMEKS03odUrTc2gTWfRhpRJy-87cP8CL_C6Sp_ysGIi_wXtkGFpP6DPHbK6gZg/exec' + '?name=' + encodeURIComponent(name) + '&query=' + encodeURIComponent(query);
 
             $.get(url, function(data) {
                 var response = JSON.parse(data);
