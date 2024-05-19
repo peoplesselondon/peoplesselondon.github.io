@@ -103,8 +103,7 @@
             var query = $('#query').val();
             var url = 'https://script.google.com/macros/s/AKfycbwJuUypqMEKS03odUrTc2gTWfRhpRJy-87cP8CL_C6Sp_ysGIi_wXtkGFpP6DPHbK6gZg/exec' + '?name=' + encodeURIComponent(name) + '&query=' + encodeURIComponent(query);
 
-            $.get(url, function(data) {
-                var response = JSON.parse(data);
+            $.get(url, function(response) {
                 var ward = response.ward;
                 var councillors = response.councillors;
                 var links = response.links;
