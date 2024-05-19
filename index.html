@@ -115,7 +115,7 @@
                     resultHtml = '<div>You live in the ' + ward + ' ward and have ' + councillors.length + ' councillors: ' + councillors.join(', ') + '</div>';
                     councillors.forEach(function(councillor, index) {
                         var link = links[index];
-                        resultHtml += '<a href="' + link + '?name=' + encodeURIComponent(name) + '" target="_blank">Email ' + councillor + '</a><br>';
+                        resultHtml += '<a href="' + link + encodeURIComponent(name) + '" target="_blank">Email ' + councillor + '</a><br>';
                     });
                 }
                 $('#result').html(resultHtml);
