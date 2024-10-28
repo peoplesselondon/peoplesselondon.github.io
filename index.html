@@ -26,12 +26,6 @@
             max-width: 800px;
             height: auto;
         }
-        .title-container {
-            text-align: center;
-            padding: 20px 0;
-            color: #4CAF50;
-            font-size: 2em;
-        }
         main {
             max-width: 800px;
             margin: 20px;
@@ -72,8 +66,57 @@
         button:hover {
             background-color: #45a049;
         }
-        #result {
-            margin-top: 20px;
+
+        /* Modal styling */
+        #resultModal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+        }
+        #modalContent {
+            background: white;
+            padding: 20px;
+            max-width: 500px;
+            width: 90%;
+            border-radius: 8px;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+        #closeModal {
+            background: #f44336;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            cursor: pointer;
+            font-size: 1em;
+            margin-top: 10px;
+            border-radius: 4px;
+        }
+        #closeModal:hover {
+            background: #d32f2f;
+        }
+
+        /* Spinner styling */
+        .spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #3498db;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            animation: spin 1s linear infinite;
+            display: inline-block;
+            margin-bottom: 10px;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
     </style>
 </head>
@@ -82,17 +125,28 @@
         <img src="https://i.imgur.com/CCeU1aQ.png" alt="Banner">
     </header>
     <main>
-        <h1>Tell your ward councillors that Waltham Forest needs to Divest Now as agreed in July! (email updated October 2024) </h1>
+        <h1>Tell your ward councillors that Waltham Forest needs to Divest Now!</h1>
         <div class="explanation">
-            Use this tool to find and contact your local councillors. Simply enter your postcode and name, and this tool will make ready to go emails asking for divestment to your councillors automatically. Make sure to enter your postcode in the correct format (e.g., E10 1AB). Tool works best on mobile.
+            Use this tool to find and contact your local councillors. Enter your postcode and name, and the tool will prepare emails for your councillors.
         </div>
         <form id="custom-form">
             <input type="text" id="name" placeholder="Enter your name" required>
             <input type="text" id="query" placeholder="Enter postcode" required>
             <button type="submit">Submit</button>
         </form>
-        <div id="result"></div>
     </main>
+
+    <!-- Modal structure -->
+    <div id="resultModal">
+        <div id="modalContent">
+            <div id="loading" style="display: none;">
+                <div class="spinner"></div>
+                <div>Loading, please wait...</div>
+            </div>
+            <div id="result"></div>
+            <button id="closeModal">Close</button>
+        </div>
+    </div>
 
     <script type="text/javascript">
     jQuery(document).ready(function($) {
@@ -102,6 +156,11 @@
             var name = $('#name').val();
             var query = $('#query').val();
             var url = 'https://script.google.com/macros/s/AKfycbwJuUypqMEKS03odUrTc2gTWfRhpRJy-87cP8CL_C6Sp_ysGIi_wXtkGFpP6DPHbK6gZg/exec' + '?name=' + encodeURIComponent(name) + '&query=' + encodeURIComponent(query);
+
+            // Show the modal and the loading spinner
+            $('#result').html('');  // Clear previous result
+            $('#loading').show();
+            $('#resultModal').css('display', 'flex');  // Show the modal
 
             $.get(url, function(response) {
                 var ward = response.ward;
@@ -118,8 +177,16 @@
                         resultHtml += '<a href="' + link + encodeURIComponent(name) + '" target="_blank">Email ' + councillor + '</a><br>';
                     });
                 }
+
+                // Hide the loading spinner and show the result
+                $('#loading').hide();
                 $('#result').html(resultHtml);
             });
+        });
+
+        // Close modal button
+        $('#closeModal').on('click', function() {
+            $('#resultModal').css('display', 'none');  // Hide the modal
         });
     });
     </script>
