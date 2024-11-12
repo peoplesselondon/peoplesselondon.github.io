@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Contact Your Councillors</title>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <style>
         body {
             font-family: 'Arial', sans-serif;
@@ -149,13 +149,28 @@
     </div>
 
     <script type="text/javascript">
-    jQuery(document).ready(function($) {
+        var councillorsNameToken = '{councillorName}';
+        var wardToken = '{ward}';
+        var signeeToken = '{signee}';
+        const emailBodyTemplate = `Dear%20%7BcouncillorName%7D%2C%0A%0AAs%20a%20resident%20of%20your%20%7Bward%7D%20ward%2C%20%20I%20am%20writing%20to%20let%20you%20know%20that%20I%20do%20not%20think%20it%20is%20acceptable%20that%20there%20has%20been%20no%20timeline%20agreed%20for%20divesting%20from%20companies%20complicit%20in%20human%20rights%20abuses.%20I%20am%20extremely%20concerned%20that%20there%20are%20millions%20of%20pounds%20currently%20invested%20in%20complicit%20companies%20in%20addition%20to%20the%20funds%20being%20held%20with%20Barclays%20bank.%20%0AFortunately%2C%20there%20are%20a%20number%20of%20reputable%20organisations%20that%20specify%20and%20evidence%20complicity%20in%20the%20companies%20listed%20above.%20They%20include%3A%0A%20%20%20%20%20%E2%97%8F%20Official%20BDS%20movement%0A%20%20%20%20%20%E2%97%8F%20UN%20OHCHR%0A%20%20%20%20%20%E2%97%8F%20Who%20Profits%3F%0A%20%20%20%20%20%E2%97%8F%20Campaign%20Against%20the%20Arms%20Trade%0A%20%20%20%20%20%E2%97%8F%20American%20Friends%20Service%20Committee%0A%0AOrganisers%20have%20highlighted%20these%20to%20the%20Pensions%20Committee%20and%20the%20Council%20but%20they%20have%20not%20received%20a%20response%20to%20their%20suggested%20exclusions.%20When%20will%20you%20answer%20our%20demand%20for%20full%20divestment%3F%20What%20will%20you%20do%20as%20my%20local%20councillor%20to%20speak%20out%20against%20the%20funding%20of%20genocide%20and%20occupation%3F%20%0A%0AMultiple%20Councils%20across%20the%20UK%20are%20answering%20demands%20for%20ethical%20divestment%20and%20to%20cut%20all%20ties%20to%20companies%20complicit%20in%20Israel%E2%80%99s%20well-evidenced%20human%20rights%20abuses.%20In%20London%20multiple%20LGPS%20divestment%20campaigns%20are%20working%20together%20to%20demand%20that%20one%20of%20the%20biggest%20fund%20managers%2C%20the%20London%20Collective%20Investment%20Vehicle%2C%20creates%20a%20genuinely%20ethical%20fund%20which%20councils%20can%20opt%20into.%0A%0AWe%2C%20in%20Lewisham%20for%20a%20Free%20Palestine%2C%20are%20a%20community%20opposed%20to%20genocide%20and%20the%20funding%20of%20grave%20atrocities%20against%20oppressed%20and%20occupied%20people.%20Residents%20will%20not%20sit%20quietly%20as%20long%20as%20Lewisham%27s%E2%80%99s%20Pension%20Fund%20remains%20directly%20connected%20to%20a%20genocidal%20occupation.%20I%20reject%20this%20complicity%20in%20our%20borough%20and%20would%20appreciate%20you%20making%20my%20voice%20heard%20in%20the%20Council%20as%20the%20local%20representative%20for%20my%20ward.%20%0A%0AThank%20you%20for%20your%20time%2C%0A%7Bsignee%7D`;
+        
+        function getEmailBody(councillor, ward, signee) {
+            return emailBodyTemplate.replace(encodeURIComponent(councillorsNameToken), encodeURIComponent(councillor.name))
+                .replace(encodeURIComponent(wardToken), encodeURIComponent(ward))
+                .replace(encodeURIComponent(signeeToken),  encodeURIComponent(signee));
+        }
+
+        function generateLink(councillor, ward, signee) {
+            return `<a href="mailto:${councillor.email}?subject=Lewisham Divest Now&body=${getEmailBody(councillor, ward, signee)}">Email ${councillor.name}</a><br />`;
+        }
+
+        jQuery(document).ready(function($) {
         $('#custom-form').on('submit', function(event) {
             event.preventDefault();
 
             var name = $('#name').val();
             var query = $('#query').val();
-            var url = 'https://script.google.com/macros/s/AKfycbwJuUypqMEKS03odUrTc2gTWfRhpRJy-87cP8CL_C6Sp_ysGIi_wXtkGFpP6DPHbK6gZg/exec' + '?name=' + encodeURIComponent(name) + '&query=' + encodeURIComponent(query);
+            var url = 'https://script.google.com/macros/s/AKfycbzN7FhBAz0U4Kl3PnpFI79_NsnM4cfLHZsDIAz2_zcWBsXs1sPkDUF0Z6OTA8zA4Tkb/exec?postcode=' + encodeURIComponent(query);
 
             // Show the modal and the loading spinner
             $('#result').html('');  // Clear previous result
@@ -165,16 +180,15 @@
             $.get(url, function(response) {
                 var ward = response.ward;
                 var councillors = response.councillors;
-                var links = response.links;
                 var resultHtml = '';
 
                 if (ward === "Invalid") {
                     resultHtml = '<div>Bad postcode - please enter in format E10 1AB</div>';
                 } else {
-                    resultHtml = '<div>You live in the ' + ward + ' ward and have ' + councillors.length + ' councillors: ' + councillors.join(', ') + '</div>';
-                    councillors.forEach(function(councillor, index) {
-                        var link = links[index];
-                        resultHtml += '<a href="' + link + encodeURIComponent(name) + '" target="_blank">Email ' + councillor + '</a><br>';
+                    let councillorNames = councillors.map(councillor => councillor.name).join(', ');
+                    resultHtml = '<div>You live in the ' + ward + ' ward and have ' + councillors.length + ' councillors: ' + councillorNames + '</div>';
+                    councillors.forEach(function(councillor) {
+                        resultHtml += generateLink(councillor, ward, name); 
                     });
                 }
 
