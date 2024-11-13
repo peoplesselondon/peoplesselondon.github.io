@@ -160,7 +160,7 @@
         }
 
         function generateLink(councillor, ward, signee) {
-            return `<a href="mailto:${councillor.email}?subject=Lewisham Divest Now&body=${getEmailBody(councillor, ward, signee)}">Email ${councillor.name}</a><br />`;
+            return `<a href="mailto:${councillor.email}?bcc=LewishamPSC@gmail.com&subject=Lewisham Divest Now&body=${getEmailBody(councillor, ward, signee)}">Email ${councillor.name}</a><br />`;
         }
 
         jQuery(document).ready(function($) {
