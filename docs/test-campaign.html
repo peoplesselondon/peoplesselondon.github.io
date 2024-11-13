@@ -127,7 +127,7 @@
     <main>
         <h1>Tell your ward councillors to Divest Now!</h1>
         <div class="explanation">
-            Use this tool to find and contact your local councillors. Simply enter your postcode and name, and this tool will make ready to go emails asking for divestment to your councillors automatically. Make sure to enter your postcode in the correct format (e.g., E10 1AB). <br> <br> Tool works best on mobile.
+            Use this tool to find and contact your local councillors. Simply enter your postcode and name, and this tool will make ready to go emails asking for divestment to your councillors automatically. Make sure to enter your postcode in the correct format (e.g., SE12 9XY). <br> <br> Tool works best on mobile.
         </div>
         <form id="custom-form">
             <input type="text" id="name" placeholder="Enter your name" required>
@@ -182,8 +182,8 @@
                 var councillors = response.councillors;
                 var resultHtml = '';
 
-                if (ward === "Invalid") {
-                    resultHtml = '<div>Bad postcode - please enter in format E10 1AB</div>';
+                if (!ward) {
+                    resultHtml = '<div>Bad postcode - please enter in format SE12 9XY</div>';
                 } else {
                     let councillorNames = councillors.map(councillor => councillor.name).join(', ');
                     resultHtml = '<div>You live in the ' + ward + ' ward and have ' + councillors.length + ' councillors: ' + councillorNames + '</div>';
