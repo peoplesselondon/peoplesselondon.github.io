@@ -127,10 +127,10 @@
         <h1>Tell your ward councillors to Divest Now!</h1>
         <div class="explanation">
             <p>Use this tool to find and contact your local councillors. Simply
-            enter your postcode and name, and this tool will make ready to go
-            emails asking for divestment to your councillors automatically. Make
-            sure to enter your postcode in the correct format (e.g., SE12
-            9XY).</p>
+            enter your postcode and name, and this tool will provide links that 
+            will open a ready to send email using the email client configured 
+            on your machine.</p>
+            <p>Your name is used to generate the email and is not stored on our servers.</p>
         </div>
         <form id="custom-form">
             <input type="text" id="name" placeholder="Enter your name" required>
@@ -187,10 +187,10 @@
                 var resultHtml = '';
 
                 if (!ward) {
-                    resultHtml = '<div>Bad postcode - please enter in format SE12 9XY</div>';
+                    resultHtml = '<p>We could not find the postcode in our database.</p><p>This tool only works with postcodes in the London Borough of Lewisham, please ensure you entered a valid Lewisham postcode.</p>';
                 } else {
                     let councillorNames = councillors.map(councillor => councillor.name).join(', ');
-                    resultHtml = '<div>You live in the ' + ward + ' ward and have ' + councillors.length + ' councillors: ' + councillorNames + '</div>';
+                    resultHtml = '<p>We found ' + councillors.length + ' councillors for the ward of ' + ward +'.</p><p>Please click on each link below and send the email that opens.</p>';
                     councillors.forEach(function(councillor) {
                         resultHtml += generateLink(councillor, ward, name); 
                     });
