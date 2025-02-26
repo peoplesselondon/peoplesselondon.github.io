@@ -130,13 +130,15 @@
             enter your postcode and name, and this tool will provide links that 
             will open a ready to send email using the email client configured 
             on your machine.</p>
-            <p>Your name is used to generate the email and is not stored on our servers.</p>
         </div>
         <form id="custom-form">
             <input type="text" id="name" placeholder="Enter your name" required>
             <input type="text" id="query" placeholder="Enter postcode" required>
             <button type="submit">Submit</button>
         </form>
+        <div class="explanation">
+            <p>Please forward any responses from your councillor to info@lewishampsc.org</p>
+        </div>
     </main>
 
     <!-- Modal structure -->
@@ -169,8 +171,8 @@
         }
 
         function generateLink(councillor, ward, signee) {
-            return `<a
-            href="mailto:${councillor.email}?bcc=LewishamPSC@gmail.com&subject=Lewisham Divest for Palestine&body=${getEmailBody(councillor, ward, signee)}">Email ${councillor.name}</a><br />`;
+            return `<a target="_blank"
+            href="mailto:${councillor.email}?bcc=info@lewishampsc.org&subject=Lewisham Divest for Palestine&body=${getEmailBody(councillor, ward, signee)}">Email ${councillor.name}</a><br />`;
         }
 
         jQuery(document).ready(function($) {
@@ -195,7 +197,7 @@
                     resultHtml = '<p>We could not find the postcode in our database.</p><p>This tool only works with postcodes in the London Borough of Lewisham, please ensure you entered a valid Lewisham postcode.</p>';
                 } else {
                     let councillorNames = councillors.map(councillor => councillor.name).join(', ');
-                    resultHtml = '<p>We found ' + councillors.length + ' councillors for the ward of ' + ward +'.</p><p>Please click on each link below and send the email that opens.</p>';
+                    resultHtml = '<p>We found ' + councillors.length + ' councillors for the ward of ' + ward +'.</p><p>Please return to this window and click on each councillor below to send tham an email.</p>';
                     councillors.forEach(function(councillor) {
                         resultHtml += generateLink(councillor, ward, name); 
                     });
