@@ -27,14 +27,80 @@ function checkPostcode(postcode) {
   return validPostcodesSet.has(normalisePostcode(postcode));
 }
 
+function contains2CharactersSeperatedBySpace(name) {
+    return typeof name === 'string' && name.split(' ').length >= 2;
+}
+
+function removeInvalidNames() {
+    var spreadsheet = SpreadsheetApp.getActive();
+    var responsesSheet = spreadsheet.getSheetByName('Form responses 1');
+    var responsesHeaders = responsesSheet.getRange(1, 1, 1, responsesSheet.getLastColumn()).getValues()[0];
+    var nameColIndex = responsesHeaders.indexOf('Name') + 1;
+    var orgNameColIndex = responsesHeaders.indexOf('Organisation name') + 1;
+    var responsesRange = responsesSheet.getRange(2, 1, responsesSheet.getLastRow() - 1, responsesSheet.getLastColumn());
+    var responsesValues = responsesRange.getValues();
+    var validNames = [];
+    var invalidNames = [];
+    
+    for (var i = 0; i < responsesValues.length; i++) {
+        var name = responsesValues[i][nameColIndex - 1] || responsesValues[i][orgNameColIndex - 1];
+        if (contains2CharactersSeperatedBySpace(name)) {
+          validNames.push(responsesValues[i]);
+        } else {
+          invalidNames.push(responsesValues[i]);
+        }
+    }
+    
+    var validNamesSheet = getOrCreateSheet(spreadsheet, 'Valid Names');
+    var invalidNamesSheet = getOrCreateSheet(spreadsheet, 'Invalid Names');
+    
+    updateSheet(validNamesSheet, responsesHeaders, validNames);
+    updateSheet(invalidNamesSheet, responsesHeaders, invalidNames);
+}
+
+function removeInvalidAddress() {
+    var spreadsheet = SpreadsheetApp.getActive();
+    var responsesSheet = spreadsheet.getSheetByName('Valid Names');
+    var responsesHeaders = responsesSheet.getRange(1, 1, 1, responsesSheet.getLastColumn()).getValues()[0];
+    var addressColIndex = responsesHeaders.indexOf(`Address:
+
+PLEASE NOTE:
+
+This should be your place of residence/work/study within the borough of Lewisham. 
+
+Please supply a Lewisham address to prevent the council from discounting your signature.`) + 1;
+    var orgAddressColIndex = responsesHeaders.indexOf('Address') + 1;
+    var responsesRange = responsesSheet.getRange(2, 1, responsesSheet.getLastRow() - 1, responsesSheet.getLastColumn());
+    var responsesValues = responsesRange.getValues();
+    var validAddresses = [];
+    var invalidAddresses = [];
+    
+    for (var i = 0; i < responsesValues.length; i++) {
+        var address = responsesValues[i][addressColIndex - 1] || responsesValues[i][orgAddressColIndex - 1];
+        if (contains2CharactersSeperatedBySpace(address)) {
+          validAddresses.push(responsesValues[i]);
+        } else {
+          invalidAddresses.push(responsesValues[i]);
+        }
+    }
+    
+    var validAddressesSheet = getOrCreateSheet(spreadsheet, 'Valid Addresses');
+    var invalidAddressesSheet = getOrCreateSheet(spreadsheet, 'Invalid Addresses');
+    
+    updateSheet(validAddressesSheet, responsesHeaders, validAddresses);
+    updateSheet(invalidAddressesSheet, responsesHeaders, invalidAddresses);  
+}
+
 function clean() {
+  removeInvalidNames();
+  removeInvalidAddress();
   removeInvalidPostcodes();
   deDuplicate();
 }
 
 function removeInvalidPostcodes() {
   var spreadsheet = SpreadsheetApp.getActive();
-  var responsesSheet = spreadsheet.getSheetByName('Form responses 1');
+  var responsesSheet = spreadsheet.getSheetByName('Valid Addresses');
   var responsesHeaders = responsesSheet.getRange(1, 1, 1, responsesSheet.getLastColumn()).getValues()[0];
   var individualPostcodeColIndex = responsesHeaders.indexOf('Postcode') + 1;
   var organisationPostcodeColIndex = responsesHeaders.lastIndexOf('Postcode') + 1;
@@ -67,11 +133,11 @@ function deDuplicate() {
   var validPostcodesRange = validPostcodesSheet.getRange(1, 1, validPostcodesSheet.getLastRow(), validPostcodesSheet.getLastColumn());
   var validPostcodesValues = validPostcodesRange.getValues();
   var validPostcodesHeaders = validPostcodesValues.shift();
-  var deduplicatedValues = [validPostcodesHeaders];
-  var duplicateEmailValues = [validPostcodesHeaders];
-  var duplicateIndividualPhoneValues = [validPostcodesHeaders];
-  var duplicateOrganisationPhoneValues = [validPostcodesHeaders];
-  var duplicateNamePostcodeValues = [validPostcodesHeaders];
+  var deduplicatedValues = [];
+  var duplicateEmailValues = [];
+  var duplicateIndividualPhoneValues = [];
+  var duplicateOrganisationPhoneValues = [];
+  var duplicateNamePostcodeValues = [];
   var deduplicatedSet = new Set();
   var emailSet = new Set();
   var individualPhoneSet = new Set();
