@@ -156,7 +156,7 @@ function deDuplicate() {
   var emailSet = new Set();
   var individualPhoneSet = new Set();
   var organisationPhoneSet = new Set();
-  var nameColIndex = validPostcodesHeaders.indexOf('Name') + 1;
+  var nameColIndex = validPostcodesHeaders.indexOf('Full name (surname required)') + 1;
   var postcodeColIndex = validPostcodesHeaders.indexOf('Postcode') + 1;
   var individualEmailColIndex = validPostcodesHeaders.indexOf('Email address') + 1;
   var organisationEmailColIndex = validPostcodesHeaders.lastIndexOf('Email address') + 1;
@@ -221,5 +221,6 @@ function getOrCreateSheet(spreadsheet, sheetName) {
 function updateSheet(sheet, headers, values) {
   sheet.clear();
   sheet.getRange(1, 1, 1, headers.length).setValues([headers]);
-  sheet.getRange(2, 1, values.length, headers.length).setValues(values);
+  if(values.length > 0)
+    sheet.getRange(2, 1, values.length, headers.length).setValues(values);
 }
