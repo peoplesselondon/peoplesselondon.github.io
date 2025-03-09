@@ -27,15 +27,28 @@ function checkPostcode(postcode) {
   return validPostcodesSet.has(normalisePostcode(postcode));
 }
 
+function isNotEmpty(value) {
+   return value != null && value.trim();
+}
+
 function contains2CharactersSeperatedBySpace(name) {
-    return typeof name === 'string' && name.split(' ').length >= 2;
+    // Check if name is a string
+    if (typeof name !== 'string') {
+        return false;
+    }
+    
+    // Trim leading and trailing spaces, then split by spaces
+    const words = name.trim().split(/\s+/);
+    
+    // Check if there are at least 2 non-empty words
+    return words.length >= 2;
 }
 
 function removeInvalidNames() {
     var spreadsheet = SpreadsheetApp.getActive();
     var responsesSheet = spreadsheet.getSheetByName('Form responses 1');
     var responsesHeaders = responsesSheet.getRange(1, 1, 1, responsesSheet.getLastColumn()).getValues()[0];
-    var nameColIndex = responsesHeaders.indexOf('Name') + 1;
+    var nameColIndex = responsesHeaders.indexOf('Full name (surname required)') + 1;
     var orgNameColIndex = responsesHeaders.indexOf('Organisation name') + 1;
     var responsesRange = responsesSheet.getRange(2, 1, responsesSheet.getLastRow() - 1, responsesSheet.getLastColumn());
     var responsesValues = responsesRange.getValues();
@@ -43,8 +56,9 @@ function removeInvalidNames() {
     var invalidNames = [];
     
     for (var i = 0; i < responsesValues.length; i++) {
-        var name = responsesValues[i][nameColIndex - 1] || responsesValues[i][orgNameColIndex - 1];
-        if (contains2CharactersSeperatedBySpace(name)) {
+        var name = responsesValues[i][nameColIndex - 1];
+        var orgName =  responsesValues[i][orgNameColIndex - 1];
+        if (contains2CharactersSeperatedBySpace(name) || isNotEmpty(orgName)) {
           validNames.push(responsesValues[i]);
         } else {
           invalidNames.push(responsesValues[i]);
