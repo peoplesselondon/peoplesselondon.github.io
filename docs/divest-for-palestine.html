@@ -117,6 +117,165 @@
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
         }
+        
+        .councillor-email {
+            margin-bottom: 25px;
+            border: 1px solid #eee;
+            padding: 15px;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+        }
+        
+        .councillor-email h3 {
+            margin-top: 0;
+            margin-bottom: 10px;
+            color: #333;
+        }
+        
+        .copy-instructions {
+            margin-bottom: 15px;
+            padding: 8px;
+            background-color: #fff;
+            border-left: 3px solid #4CAF50;
+            font-size: 0.9em;
+        }
+        
+        .copy-email-btn {
+            padding: 6px 12px;  /* Match padding with email link */
+            margin: 0;  /* Remove margin */
+            line-height: 1.2;  /* Control line height */
+        }
+        
+        .copy-email-btn:hover {
+            background-color: #45a049;
+        }
+        
+        .email-link {
+            display: inline-block;
+            padding: 6px 12px;  /* Reduced padding */
+            background-color: #2196F3;
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+            font-size: 0.9em;
+            line-height: 1.2;  /* Control line height */
+        }
+        
+        .email-link:hover {
+            background-color: #0b7dda;
+        }
+        
+        .fallback-section {
+            margin-top: 40px;
+            padding: 20px;
+            border-top: 2px dashed #ccc;
+            background-color: #f7f7f7;
+        }
+        
+        .fallback-section h2 {
+            color: #d32f2f;
+            margin-top: 0;
+        }
+        
+        .full-email-link {
+            display: inline-block;
+            padding: 10px 15px;
+            background-color: #4CAF50;
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+            font-size: 1em;
+            margin: 10px 0;
+        }
+        
+        .full-email-link:hover {
+            background-color: #45a049;
+        }
+        
+        .fallback-councillors {
+            margin-top: 20px;
+        }
+        
+        .councillor-email.fallback {
+            background-color: white;
+            border: 1px solid #ddd;
+        }
+        
+        .fallback-instructions {
+            margin-bottom: 20px;
+            padding: 10px;
+            background-color: #fff;
+            border-left: 3px solid #4CAF50;
+            font-size: 0.9em;
+        }
+        
+        .fallback-councillor {
+            margin-bottom: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+        
+        .councillor-name {
+            padding: 10px 15px;
+            background-color: #f0f0f0;
+            cursor: pointer;
+            font-weight: bold;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .councillor-name:hover {
+            background-color: #e0e0e0;
+        }
+        
+        .toggle-icon {
+            font-size: 12px;
+            transition: transform 0.3s;
+        }
+        
+        .toggle-active .toggle-icon {
+            transform: rotate(180deg);
+        }
+        
+        .councillor-actions {
+            padding: 10px;  /* Reduced padding */
+            background-color: white;
+            display: flex;
+            gap: 8px;
+            align-items: center;  /* Vertically center items */
+        }
+        
+        #resultModal {
+            overflow-y: auto;
+        }
+        
+        #modalContent {
+            margin: 30px auto;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+        
+        .councillor-links {
+            margin-bottom: 30px;
+        }
+        
+        .councillor-link {
+            display: block;
+            padding: 12px 15px;
+            background-color: #4CAF50;
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+            font-size: 1em;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+        
+        .councillor-link:hover {
+            background-color: #45a049;
+        }
     </style>
 </head>
 <body>
@@ -169,10 +328,74 @@
                 .replace(encodeURIComponent(wardToken), encodeURIComponent(ward))
                 .replace(encodeURIComponent(signeeToken),  encodeURIComponent(signee));
         }
-
-        function generateLink(councillor, ward, signee) {
-            return `<a target="_blank"
-            href="mailto:${councillor.email}?bcc=info@lewishampsc.org&subject=Lewisham Divest for Palestine&body=${getEmailBody(councillor, ward, signee)}">Email ${councillor.name}</a><br />`;
+        
+        function generateLinks(councillors, ward, name) {
+            let html = '';
+        
+            // First show the regular links with full mailto
+            html += '<p>We found ' + councillors.length + ' councillors for the ward of ' + ward +
+                    '.</p><p>Please click on each councillor below to send them an email:</p>';
+        
+            // Simple list of email links
+            html += '<div class="councillor-links">';
+            councillors.forEach(function(councillor) {
+                var emailBody = getEmailBody(councillor, ward, name);
+                html += `<a class="councillor-link" target="_blank" 
+                        href="mailto:${councillor.email}?bcc=info@lewishampsc.org&subject=Lewisham Divest for Palestine&body=${emailBody}">
+                        Email ${councillor.name}
+                    </a>`;
+            });
+            html += '</div>';
+        
+            // Fallback section remains the same
+            html += `<div class="fallback-section">
+                <h2>Links not opening correctly?</h2>
+                <p>Some email clients have limitations with long email bodies. If the links above don't work, follow these steps:</p>
+        
+                <div class="fallback-instructions">
+                    <ol>
+                        <li><strong>Step 1:</strong> Click a councillor's name below</li>
+                        <li><strong>Step 2:</strong> Click "Copy email text" to copy the full message</li>
+                        <li><strong>Step 3:</strong> Click "Open email" to launch your email program</li>
+                        <li><strong>Step 4:</strong> Paste the copied text into the email body and send</li>
+                    </ol>
+                </div>
+        
+                <div class="fallback-councillors">`;
+        
+            councillors.forEach(function(councillor) {
+                var emailBody = getEmailBody(councillor, ward, name);
+                var decodedEmailBody = decodeURIComponent(emailBody);
+        
+                html += `<div class="fallback-councillor">
+                    <div class="councillor-name" data-councillor-id="${councillor.email}">
+                        ${councillor.name} <span class="toggle-icon">▼</span>
+                    </div>
+                    <div class="councillor-actions" id="actions-${councillor.email.replace(/[@.]/g, '-')}" style="display:none;">
+                        <button class="copy-email-btn" data-email="${escapeHtml(decodedEmailBody)}">
+                            Copy email text
+                        </button>
+                        <a class="email-link" target="_blank"
+                           href="mailto:${councillor.email}?bcc=info@lewishampsc.org&subject=Lewisham Divest for Palestine">
+                           Open email
+                        </a>
+                    </div>
+                </div>`;
+            });
+        
+            html += '</div></div>';
+        
+            return html;
+        }
+        
+        // Helper function to escape HTML for data attributes
+        function escapeHtml(text) {
+            return text
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/"/g, "&quot;")
+                .replace(/'/g, "&#039;");
         }
 
         jQuery(document).ready(function($) {
@@ -192,23 +415,47 @@
                 var ward = response.ward;
                 var councillors = response.councillors;
                 var resultHtml = '';
-
+            
                 if (!ward) {
                     resultHtml = '<p>We could not find the postcode in our database.</p><p>This tool only works with postcodes in the London Borough of Lewisham, please ensure you entered a valid Lewisham postcode.</p>';
                 } else {
-                    let councillorNames = councillors.map(councillor => councillor.name).join(', ');
-                    resultHtml = '<p>We found ' + councillors.length + ' councillors for the ward of ' + ward +'.</p><p>Please return to this window and click on each councillor below to send tham an email.</p>';
-                    councillors.forEach(function(councillor) {
-                        resultHtml += generateLink(councillor, ward, name); 
-                    });
+                    resultHtml = generateLinks(councillors, ward, name);
                 }
-
+            
                 // Hide the loading spinner and show the result
                 $('#loading').hide();
                 $('#result').html(resultHtml);
             });
         });
+        
+        // Copy email to clipboard functionality
+        $(document).on('click', '.copy-email-btn', function() {
+            const emailText = $(this).data('email');
+            const councillorName = $(this).data('name');
+            const $instructions = $(this).siblings('.copy-instructions');
+            
+            navigator.clipboard.writeText(emailText)
+                .then(() => {
+                    // Show instructions
+                    $instructions.slideDown();
+                    // Change button text temporarily
+                    const $btn = $(this);
+                    const originalText = $btn.text();
+                    $btn.text('Copied! ✓');
+                    setTimeout(() => $btn.text(originalText), 2000);
+                })
+                .catch(err => {
+                    alert('Could not copy email text: ' + err);
+                });
+        });
 
+        $(document).on('click', '.councillor-name', function() {
+            const councillorId = $(this).data('councillor-id');
+            const actionsId = '#actions-' + councillorId.replace(/[@.]/g, '-');
+            $(actionsId).slideToggle(200);
+            $(this).toggleClass('toggle-active');
+        });
+        
         // Close modal button
         $('#closeModal').on('click', function() {
             $('#resultModal').css('display', 'none');  // Hide the modal
