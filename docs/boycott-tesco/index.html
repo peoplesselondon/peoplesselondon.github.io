@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Don't buy apartheid</title>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background-color: white;
+        }
+        header {
+            width: 100%;
+            display: none;
+            justify-content: center;
+            align-items: center;
+        }
+        header img {
+            width: 100%;
+            max-width: 840px;
+            height: auto;
+        }
+        main {
+            max-width: 800px;
+            padding: 20px;
+            background: white;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        .explanation {
+            margin-bottom: 20px;
+            font-size: 1.2em;
+            color: #666;
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        input[type="text"] {
+            padding: 10px;
+            margin: 10px 0;
+            width: 100%;
+            max-width: 400px;
+            font-size: 1em;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 1em;
+            color: white;
+            background-color: #4CAF50;
+            border: none;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+
+        /* Modal styling */
+        #resultModal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+        }
+        #modalContent {
+            background: white;
+            padding: 20px;
+            max-width: 500px;
+            width: 90%;
+            border-radius: 8px;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+        #closeModal {
+            background: #f44336;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            cursor: pointer;
+            font-size: 1em;
+            margin-top: 10px;
+            border-radius: 4px;
+        }
+        #closeModal:hover {
+            background: #d32f2f;
+        }
+
+        /* Spinner styling */
+        .spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #3498db;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            animation: spin 1s linear infinite;
+            display: inline-block;
+            margin-bottom: 10px;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .copy-instructions {
+            margin-bottom: 15px;
+            padding: 8px;
+            background-color: #fff;
+            border-left: 3px solid #4CAF50;
+            font-size: 0.9em;
+        }
+        
+        .copy-email-btn {
+            padding: 6px 12px;  /* Match padding with email link */
+            margin: 0;  /* Remove margin */
+            line-height: 1.2;  /* Control line height */
+        }
+        
+        .copy-email-btn:hover {
+            background-color: #45a049;
+        }
+        
+        .fallback-email-link {
+            display: inline-block;
+            padding: 6px 12px;  /* Reduced padding */
+            background-color: #2196F3;
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+            font-size: 0.9em;
+            line-height: 1.2;  /* Control line height */
+        }
+        
+        .fallback-email-link:hover {
+            background-color: #0b7dda;
+        }
+        
+        .fallback-section {
+            margin-top: 40px;
+            padding: 20px;
+            border-top: 2px dashed #ccc;
+            background-color: #f7f7f7;
+        }
+        
+        .fallback-section h2 {
+            color: #d32f2f;
+            margin-top: 0;
+        }
+        
+        .full-email-link {
+            display: inline-block;
+            padding: 10px 15px;
+            background-color: #4CAF50;
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+            font-size: 1em;
+            margin: 10px 0;
+        }
+        
+        .full-email-link:hover {
+            background-color: #45a049;
+        }
+        
+        .fallback-emails {
+            margin-top: 20px;
+        }
+        
+        .fallback-email.fallback {
+            background-color: white;
+            border: 1px solid #ddd;
+        }
+        
+        .fallback-instructions {
+            margin-bottom: 20px;
+            padding: 10px;
+            background-color: #fff;
+            border-left: 3px solid #4CAF50;
+            font-size: 0.9em;
+        }
+        
+        .fallback-email{
+            margin-bottom: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+        
+        
+        .toggle-icon {
+            font-size: 12px;
+            transition: transform 0.3s;
+        }
+        
+        .toggle-active .toggle-icon {
+            transform: rotate(180deg);
+        }
+        
+        .fallback-actions {
+            padding: 10px;  /* Reduced padding */
+            background-color: white;
+            display: flex;
+            gap: 8px;
+            align-items: center;  /* Vertically center items */
+        }
+        
+        #resultModal {
+            overflow-y: auto;
+        }
+        
+        #modalContent {
+            margin: 30px auto;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+        
+        .email-links {
+            margin-bottom: 30px;
+        }
+        
+        .email-link {
+            display: block;
+            padding: 12px 15px;
+            background-color: #4CAF50;
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+            font-size: 1em;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+        
+        .email-link:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <img src="../images/divest-for-palestine.jpeg" alt="Banner">
+    </header>
+    <main>
+        <h1>Don't buy apartheid</h1>
+        <h2>Email Tesco letting them know why you will boycott their products</h2>
+        <div class="explanation">
+            <p>Use this tool to send a pre-written message to Tesco managers.
+            Simple enter your name and this tool will provide a link that 
+            will open a ready to send email using the email client configured 
+            on your machine.</p>
+            <p>It’s always best to personalise, if there are relevant details which would be helpful to
+            mention, please add this to the generated email.</p>
+        </div>
+        <form id="custom-form">
+            <input type="text" id="name" placeholder="Enter your name" required>
+            <input type="text" id="yearsShopping" placeholder="Years shopping at
+            Tesco" required>
+            <button type="submit">Submit</button>
+        </form>
+    </main>
+
+    <!-- Modal structure -->
+    <div id="resultModal">
+        <div id="modalContent">
+            <div id="loading" style="display: none;">
+                <div class="spinner"></div>
+                <div>Loading, please wait...</div>
+            </div>
+            <div id="result"></div>
+            <button id="closeModal">Close</button>
+        </div>
+    </div>
+
+    <script type="text/javascript">
+        const emailBodyTemplate = `To%20whom%20it%20may%20concern%2C%0A%0AI%20have%20been%20shopping%20at%20Tesco%20for%20%7BshoppingYears%7D%20years%2C%20and%20I%20am%20concerned%20about%20the%20growing%20number%20of%20products%20stocked%20in%20Tesco%20shops%20which%20are%20unethically%20sourced%20from%20the%20Occupied%20Palestinian%20Territories.%20I%20am%20writing%20to%20urge%20you%20to%20take%20decisive%20action%20to%20identify%20and%20eliminate%20stock%20which%20is%20produced%20and%20procured%20by%20companies%20who%20do%20not%20comply%20with%20international%20law.%20Until%20Tesco%E2%80%99s%20corporate%20body%20makes%20a%20meaningful%20commitment%20to%20addressing%20this%20urgent%20issue%2C%20I%20will%20be%20boycotting%20any%20Tesco%20products%20I%20find%20to%20be%20complicit%20and%20I%20will%20be%20openly%20urging%20others%20to%20do%20the%20same.%0A%0AFor%20your%20reference%2C%20I%20have%20identified%20two%20suppliers%20of%20produce%20currently%20stocked%20by%20Tesco%20which%20have%20a%20record%20of%20conducting%20exploitative%20farming%20practices%20in%20Israel%20and%20the%20Occupied%20Palestinian%20Territories%3A%0A-%20Mehadrin%20is%20Israel%E2%80%99s%20largest%20grower%20which%20exports%20citrus%20fruit%2C%20avocados%2C%20dates%2C%20as%20well%20as%20other%20produce.%20It%20operates%20packing%20houses%20for%20fruits%20and%20vegetables%20in%20the%20Occupied%20Jordan%20Valley%20and%20grows%20crops%20in%20the%20Occupied%20Palestinian%20Settlements.%20The%20Jaffa%20citrus%20brand%20is%20part%20of%20Mehadrin.%20The%20land%20used%20to%20grow%20Mehadrin%20crops%20is%20occupied%20by%20illegal%20Israeli%20settlements%20which%20have%20displaced%20Jordan%20Valley%20Palestinians%2C%20deprived%20them%20of%20a%20vital%20source%20of%20income%2C%20and%20bottlenecked%20their%20water%20supply.%20In%20order%20to%20maintain%20this%20operation%2C%20Mehadrin%20hires%20agricultural%20workers%20from%20the%20West%20Bank%20and%20pays%20them%20a%20lower%20wage%20than%20Israeli%20workers.%20The%20exploitation%20of%20Palestinian%20people%20and%20land%20is%20fundamental%20to%20Mehadrin%E2%80%99s%20agricultural%20operations%20and%20if%20unchallenged%2C%20it%20will%20continue%20to%20perpetuate%20the%20normalisation%20of%20the%20illegal%20settlements%20in%20the%20West%20Bank%20and%20the%20occupied%20Jordan%20Valley%20region.%0A-%20Hadiklaim%2C%20or%20Israel%20Date%20Growers%20Cooperative%2C%20is%20the%20world%E2%80%99s%20market%20leader%20in%20medjool%20dates.%20In%20Tesco%2C%20they%20are%20labelled%20as%20%E2%80%98Jordan%20River%E2%80%99%20dates.%20Like%20Mehadrin%2C%20Hadiklaim%20grows%20produce%20on%20occupied%20Palestinian%20land%2C%20further%20displacing%20local%20communities.%20Hadiklaaim%20also%20frequently%20mislabels%20its%20products%20as%20%E2%80%98Made%20in%20Israel%E2%80%99%20to%20obscure%20their%20true%20origins.%20By%20stocking%20Hadiklaim%20products%2C%20Tesco%20is%20complicit%20in%20supporting%20an%20unjust%20supply%20chain%20that%20enables%20illegal%20settlement%20expansion%2C%20and%20misleads%20consumers%20purchasing%20their%20products.%0A%0ABy%20partnering%20with%20producers%20that%20cultivate%20their%20goods%20on%20stolen%20land%20and%20harvest%20their%20produce%20using%20the%20cheap%20labour%20of%20the%20same%20people%20they%20have%20dispossessed%2C%20Tesco%20is%20abetting%20illegal%20occupation%20and%20apartheid.%20Tesco%20claims%20to%20be%20%E2%80%98committed%20to%20upholding%20human%20rights%20and%20fully%20support%5Bs%5D%20the%20United%20Nations%20%28UN%29%20Universal%20Declaration%20of%20Human%20Rights%20and%20the%20International%20Labour%20Organization%20%28ILO%29%20Core%20Conventions%E2%80%99%2C%20yet%20continues%20to%20partner%20with%20organisations%20which%20are%20in%20direct%20violation%20of%20the%20conventions%20of%20the%20ILO.%0A%0AUntil%20Tesco%20has%20adopted%20a%20Human%20Rights%20policy%20which%20encompasses%20its%20commitment%20to%20stocking%20ethically%20sourced%20goods%2C%20and%20materially%20divests%20from%20partnerships%20with%20Israeli%20producers%20operating%20in%20the%20Occupied%20Palestinian%20Territories%2C%20I%20will%20be%20shopping%20at%20alternative%20supermarkets%2C%20and%20will%20not%20be%20using%20other%20Tesco%20services%20such%20as%20Tesco%20Bank%20and%20Tesco%20Mobile.%0A%0AI%20eagerly%20anticipate%20your%20response%0A%0ASincerely%2C%0A%7Bsignee%7D%0A`;
+        
+        function getEmailBody(signee, yearsShopping) {
+            return emailBodyTemplate
+                .replace(encodeURIComponent('{shoppingYears}'), encodeURIComponent(yearsShopping))
+                .replace(encodeURIComponent('{signee}'), encodeURIComponent(signee));
+        }
+        
+        function generateLinks(name, yearsShopping) {
+            let html = '';
+        
+            // Simple list of email links
+            html += '<div class="email-links">';
+            var emailBody = getEmailBody(name, yearsShopping);
+            var decodedEmailBody = decodeURIComponent(emailBody);
+            html += `<h2>Email was successfuly generated</h2><p>Click 
+                          <a target="_blank" 
+                    href="mailto:ken.murphy@tesco.com;ashwin.prasad@tesco.com;simon.t.walker@tesco.com;jason.tarry@tesco.com;imran.nawaz@tesco.com;matthew.barnes@tesco.com;charles.letizia@tesco.com?subject=Tesco's
+            commitment to upholding human rights&body=${emailBody}">
+                    here to Email Tesco 
+                </a>`;
+            html += '</div>';
+        
+            html += `<div class="fallback-section">
+                <span id="link-not-working-title">Link not opening correctly?</span>
+                <div id="link-not-working" style="display:none;">
+                    <p>Some email clients have limitations with long email bodies. If the links above don't work, follow these steps:</p>
+            
+                    <div class="fallback-instructions">
+                        <ol>
+                            <li><strong>Step 1:</strong> Click "Copy email text" to copy the full message</li>
+                            <li><strong>Step 2:</strong> Click "Open email" to launch your email program</li>
+                            <li><strong>Step 3:</strong> Paste the copied text into the email body and send</li>
+                        </ol>
+                    </div>`;
+    
+            html += `<button class="copy-email-btn" data-email="${escapeHtml(decodedEmailBody)}">
+                        Copy email text
+                    </button>
+                    <a class="fallback-email-link" target="_blank"
+                        href="mailto:ken.murphy@tesco.com;ashwin.prasad@tesco.com;simon.t.walker@tesco.com;jason.tarry@tesco.com;imran.nawaz@tesco.com;matthew.barnes@tesco.com;charles.letizia@tesco.com?subject=Tesco's
+            commitment to upholding human rights">
+                        Open email
+                    </a>
+                </div>`;
+        
+            html += '</div></div>';
+        
+            return html;
+        }
+        
+        // Helper function to escape HTML for data attributes
+        function escapeHtml(text) {
+            return text
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/"/g, "&quot;")
+                .replace(/'/g, "&#039;");
+        }
+
+        jQuery(document).ready(function($) {
+        $('#custom-form').on('submit', function(event) {
+            event.preventDefault();
+
+            var name = $('#name').val();
+            var yearsShopping = $('#yearsShopping').val();
+
+            // Show the modal and the loading spinner
+            $('#result').html('');  // Clear previous result
+            $('#loading').show();
+            $('#resultModal').css('display', 'flex');  // Show the modal
+
+            var resultHtml = generateLinks(name, yearsShopping);
+        
+            // Hide the loading spinner and show the result
+            $('#loading').hide();
+            $('#result').html(resultHtml);
+        });
+        
+        // Copy email to clipboard functionality
+        $(document).on('click', '.copy-email-btn', function() {
+            const emailText = $(this).data('email');
+            const $instructions = $(this).siblings('.copy-instructions');
+            
+            navigator.clipboard.writeText(emailText)
+                .then(() => {
+                    // Show instructions
+                    $instructions.slideDown();
+                    // Change button text temporarily
+                    const $btn = $(this);
+                    const originalText = $btn.text();
+                    $btn.text('Copied! ✓');
+                    setTimeout(() => $btn.text(originalText), 2000);
+                })
+                .catch(err => {
+                    alert('Could not copy email text: ' + err);
+                });
+        });
+
+        $(document).on('click', '#link-not-working-title', function() {
+            console.log('clicked');
+            $('#link-not-working').slideToggle();
+            $(this).toggleClass('toggle-active');
+        });
+        
+        // Close modal button
+        $('#closeModal').on('click', function() {
+            $('#resultModal').css('display', 'none');  // Hide the modal
+        });
+    });
+    </script>
+</body>
+</html>
