@@ -263,18 +263,8 @@
         
         .councillor-link {
             display: block;
-            padding: 12px 15px;
-            background-color: #4CAF50;
-            color: white;
-            text-decoration: none;
-            border-radius: 4px;
-            font-size: 1em;
-            margin-bottom: 10px;
+            font-size: 1.2em;
             text-align: center;
-        }
-        
-        .councillor-link:hover {
-            background-color: #45a049;
         }
     </style>
 </head>
@@ -283,7 +273,7 @@
         <img src="./no-cuts.jpeg" alt="Banner">
     </header>
     <main>
-        <h1>Tell your ward councillors to Divest Now!</h1>
+        <h1>Tell your ward councillors to oppose the cuts!</h1>
         <div class="explanation">
             <p>Use this tool to find and contact your local councillors. Simply
             enter your postcode and name, and this tool will provide links that 
@@ -296,7 +286,7 @@
             <button type="submit">Submit</button>
         </form>
         <div class="explanation">
-            <p>Please forward any responses from your councillor to info@lewishampsc.org</p>
+            <p>Please forward any responses from your councillor to peoplesselondon@gmail.com</p>
         </div>
     </main>
 
@@ -316,9 +306,8 @@
         var councillorsNameToken = '{councillorName}';
         var wardToken = '{ward}';
         var signeeToken = '{signee}';
-        const defaultEmailBodyTemplate = `Dear%20%7BcouncillorName%7D%2C%0A%0AAs%20a%20resident%20of%20your%20%7Bward%7D%20ward%2C%20I%20have%20been%20following%20the%20ongoing%20reforms%20adopted%20by%20the%20Lewisham%E2%80%99s%20Pensions%20Investment%20Committee%20%28PIC%29.%20I%20appreciate%20the%20work%20being%20done%20by%20committee%20members%20to%20adopt%20a%20strategy%20to%20limit%20the%20Local%20Government%20Pension%20schemes%20%28LGPS%29%20exposure%20to%20arms%20and%20weapons%20manufacturers%2C%20companies%20associated%20with%20human%20rights%20abuses%20and%20companies%20that%20operate%20within%20areas%20considered%20to%20be%20occupied%20under%20international%20law.%0A%0AUnfortunately%2C%20the%20PIC%20has%20yet%20to%20make%20good%20on%20these%20commitments.%20I%20have%20been%20following%20developments%20and%20understand%20that%20the%20committee%20has%20not%20overseen%20the%20sell-off%20of%20a%20single%20share%20since%20announcing%20they%20are%20embracing%20a%20more%20ethical%20investment%20practice.%0A%0AFreedom%20of%20information%20requests%20reveal%20that%20the%20Lewisham%20LGPS%20has%20over%20%C2%A365%20million%20invested%20in%20companies%20that%20are%20complicit%20to%20Israeli%20war%20crimes%20or%20illegal%20occupation.%20Most%20of%20the%20complicit%20companies%20sit%20in%20their%20largest%20fund%2C%20the%20Passive%20Equity%20Progressive%20Paris%20Aligned%20Fund%20or%20PEPPA%20for%20short.%20These%20companies%20include%20several%20Israeli%20banks%20that%20fund%20the%20expansion%20of%20settlements%20in%20the%20West%20Bank.%20You%20can%20get%20more%20details%20by%20following%20this%20link%20and%20selecting%20Lewisham%20from%20the%20drop-down%20list%3A%20https%3A%2F%2Flgpsdivest.org%2Flgps-investments%2F%0A%0ASeveral%20companies%20in%20the%20LGPS%20portfolio%2C%20including%20Booking.com%20and%20Airbnb%20Inc.%2C%20join%20the%20Israeli%20banks%20as%20being%20registered%20on%20the%20UN%20list%20of%20companies%20that%20are%20complicit%20in%20Israel%E2%80%99s%20illegal%20settlement%20enterprise%2C%20which%20constitutes%20a%20war%20crime%20under%20international%20law.%20You%20can%20see%20that%20UN%20list%20on%20page%204%20of%20this%20document%3A%20https%3A%2F%2Fwww.ohchr.org%2Fsites%2Fdefault%2Ffiles%2Fdocuments%2Fhrbodies%2Fhrcouncil%2Fsessions-regular%2Fsession31%2Fdatabase-hrc3136%2F23-06-30-Update-israeli-settlement-opt-database-hrc3136.pdf%0A%0ADo%20you%20support%20divestment%20from%20companies%20complicit%20in%20Israeli%20war%20crimes%20or%20illegal%20occupation%20and%20will%20you%20encourage%20the%20Pension%20Investment%20Committee%20%28PIC%29%2C%20and%20the%20chair%2C%20Councillor%20Sian%20Eiles%2C%20to%20take%20immediate%20steps%20to%20divest%20in%20exposed%20companies%3F%0A%0ACould%20you%20also%20answer%20what%20pressure%20the%20PIC%20will%20put%20on%20the%20London%20Collective%20Investment%20Vehicle%20to%20withdraw%20selected%20companies%20from%20the%20PEPPA%20fund%2C%20or%20alternatively%2C%20create%20a%20new%20fund%20that%20investment%20could%20move%20to%20that%20meets%20ethical%20investment%20requirements%3F%0A%0APlease%20respond%20to%20this%20letter%20and%20let%20me%20know%20how%20you%20plan%20to%20encourage%20the%20PIC%20to%20sell%20off%20its%20investments%20in%20exposed%20companies.%0A%0AYours%20sincerely%2C%0A%0A%7Bsignee%7D`;
+        const defaultEmailBodyTemplate = `Dear%20%7BcouncillorName%7D%2C%0A%0AAs%20a%20resident%20in%20your%20ward%2C%20I%20urge%20you%20to%20oppose%20the%20UK%20Government%E2%80%99s%20proposed%20disability%20benefit%20cuts%2C%20which%20threaten%20the%20dignity%20and%20independence%20of%20disabled%20people%20and%20impose%20severe%20financial%20strains%20on%20already%20overstretched%20local%20councils.%20I%20also%20call%20on%20you%20to%20encourage%20Lewisham%20North%20MP%20Vicky%20Foxcroft%20to%20publicly%20oppose%20these%20cuts.%20As%20a%20former%20Shadow%20Minister%20for%20Disabled%20People%20and%20a%20current%20Labour%20whip%2C%20she%20is%20uniquely%20positioned%20to%20take%20a%20stand%20and%20influence%20this%20critical%20issue.%0A%0APersonal%20Independence%20Payment%20%28PIP%29%20is%20a%20lifeline%20for%20disabled%20individuals%2C%20covering%20essential%20costs%20caused%20by%20systemic%20inequities.%20Cutting%20at%20least%20%C2%A35%20billion%20from%20these%20benefits%20by%202029%2F30%20could%20strip%20eligibility%20from%20up%20to%201.2%20million%20people%2C%20worsening%20health%20conditions%2C%20forcing%20greater%20reliance%20on%20council-funded%20care%2C%20and%20undermining%20the%20financial%20stability%20of%20local%20authorities.%0A%0AThese%20cuts%20will%20not%20only%20harm%20disabled%20residents%20but%20also%20increase%20burdens%20on%20unpaid%20carers%20and%20push%20councils%20to%20fill%20the%20gap%2C%20risking%20further%20strain%20on%20the%20NHS%20and%20social%20care%20systems.%20As%20David%20Fothergill%20of%20the%20Local%20Government%20Association%20highlights%2C%20reduced%20PIP%20eligibility%20will%20lower%20care%20contributions%2C%20forcing%20councils%20to%20cover%20rising%20costs%20at%20a%20time%20of%20government%20underfunding.%0A%0AI%20implore%20you%20to%20speak%20out%20against%20these%20proposals%20and%20actively%20support%20Vicky%20Foxcroft%20in%20publicly%20opposing%20the%20government%E2%80%99s%20plans.%20%0A%0AIn%20a%20Britain%20where%20the%20richest%201%25%20hold%20more%20wealth%20than%2070%25%20of%20the%20population%20combined%2C%20it%E2%80%99s%20clear%20that%20the%20rich%2C%20not%20disabled%20people%2C%20should%20be%20the%20ones%20asked%20to%20balance%20the%20books.%20It%20is%20an%20injustice%20that%20while%20the%20government%20increases%20the%20military%20budget%2C%20it%20cuts%20social%20security%2C%20choosing%20to%20prioritise%20military%20spending%20over%20the%20well-being%20of%20disabled%20people.%0A%0AThe%20stakes%20are%20high%20for%20disabled%20residents%2C%20their%20families%2C%20and%20our%20community.%20We%20need%20your%20voice%20to%20protect%20their%20rights%20and%20ensure%20fair%20policies.%0A%0AYours%20sincerely%2C%0A%7Bsignee%7D`;
         const emailBodyTemplateOverride = {
-            'sian.eiles@lewisham.gov.uk': 'Dear%20%7BcouncillorName%7D%2C%0A%0AAs%20a%20resident%20of%20your%20%7Bward%7D%20ward%2C%20I%20have%20been%20following%20the%20ongoing%20reforms%20adopted%20by%20the%20Lewisham%E2%80%99s%20Pensions%20Investment%20Committee%20%28PIC%29.%20I%20appreciate%20the%20work%20being%20done%20by%20committee%20members%20to%20adopt%20a%20strategy%20to%20limit%20the%20Local%20Government%20Pension%20schemes%20%28LGPS%29%20exposure%20to%20arms%20and%20weapons%20manufacturers%2C%20companies%20associated%20with%20human%20rights%20abuses%20and%20companies%20that%20operate%20within%20areas%20considered%20to%20be%20occupied%20under%20international%20law.%0A%0AUnfortunately%2C%20the%20PIC%20has%20yet%20to%20make%20good%20on%20these%20commitments.%20I%20have%20been%20following%20developments%20and%20understand%20that%20the%20committee%20has%20not%20overseen%20the%20sell-off%20of%20a%20single%20share%20since%20announcing%20they%20are%20embracing%20a%20more%20ethical%20investment%20practice.%0A%0AFreedom%20of%20information%20requests%20reveal%20that%20the%20Lewisham%20LGPS%20has%20over%20%C2%A365%20million%20invested%20in%20companies%20that%20are%20complicit%20to%20Israeli%20war%20crimes%20or%20illegal%20occupation.%20Most%20of%20the%20complicit%20companies%20sit%20in%20their%20largest%20fund%2C%20the%20Passive%20Equity%20Progressive%20Paris%20Aligned%20Fund%20or%20PEPPA%20for%20short.%20These%20companies%20include%20several%20Israeli%20banks%20that%20fund%20the%20expansion%20of%20settlements%20in%20the%20West%20Bank.%20You%20can%20get%20more%20details%20by%20following%20this%20link%20and%20selecting%20Lewisham%20from%20the%20drop-down%20list%3A%20https%3A%2F%2Flgpsdivest.org%2Flgps-investments%2F%0A%0ASeveral%20companies%20in%20the%20LGPS%20portfolio%2C%20including%20Booking.com%20and%20Airbnb%20Inc.%2C%20join%20the%20Israeli%20banks%20as%20being%20registered%20on%20the%20UN%20list%20of%20companies%20that%20are%20complicit%20in%20Israel%E2%80%99s%20illegal%20settlement%20enterprise%2C%20which%20constitutes%20a%20war%20crime%20under%20international%20law.%20You%20can%20see%20that%20UN%20list%20on%20page%204%20of%20this%20document%3A%20https%3A%2F%2Fwww.ohchr.org%2Fsites%2Fdefault%2Ffiles%2Fdocuments%2Fhrbodies%2Fhrcouncil%2Fsessions-regular%2Fsession31%2Fdatabase-hrc3136%2F23-06-30-Update-israeli-settlement-opt-database-hrc3136.pdf%0A%0ADo%20you%20support%20divestment%20from%20companies%20complicit%20in%20Israeli%20war%20crimes%20or%20illegal%20occupation%20and%20will%20you%20take%20immediate%20steps%20to%20divest%20in%20exposed%20companies%3F%0A%0ACould%20you%20also%20answer%20when%20what%20pressure%20the%20PIC%20will%20put%20on%20the%20London%20Collective%20Investment%20Vehicle%20to%20withdraw%20selected%20companies%20from%20the%20PEPPA%20fund%2C%20or%20alternatively%2C%20create%20a%20new%20fund%20that%20investment%20could%20move%20to%20that%20meets%20ethical%20investment%20requirements%3F%0A%0AYours%20sincerely%2C%0A%0A%7Bsignee%7D'
         }
         
         function getEmailBody(councillor, ward, signee) {
@@ -341,7 +330,7 @@
             councillors.forEach(function(councillor) {
                 var emailBody = getEmailBody(councillor, ward, name);
                 html += `<a class="councillor-link" target="_blank" 
-                        href="mailto:${councillor.email}?bcc=info@lewishampsc.org&subject=Lewisham Divest for Palestine&body=${emailBody}">
+                        href="mailto:${councillor.email}?bcc=peoplesselondon@gmail.com&subject=Stop disability benefit cuts&body=${emailBody}">
                         Email ${councillor.name}
                     </a>`;
             });
@@ -376,7 +365,7 @@
                             Copy email text
                         </button>
                         <a class="email-link" target="_blank"
-                           href="mailto:${councillor.email}?bcc=info@lewishampsc.org&subject=Lewisham Divest for Palestine">
+                           href="mailto:${councillor.email}?bcc=peoplesselondon@gmail.com&subject=Stop disability benefit cuts">
                            Open email
                         </a>
                     </div>
